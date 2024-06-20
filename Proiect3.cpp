@@ -8,8 +8,7 @@ enum class level{
     executive,
     managerial,
     professional,
-    tehnical,
-    none
+    tehnical
 };
 
 // ============================== TEMPLATE ==============================
@@ -141,7 +140,7 @@ public:
     void setID(){
         ID = ID_seq++;
     }
-    int getID(){
+    int getID() const{
         return ID;
     }
 
@@ -170,10 +169,10 @@ public:
         return out;
     }
 
-    ~Worker(){};
+    ~Worker()= default;
 };
 
-int Worker::ID_seq = 0;
+int Worker::ID_seq = 1;
 
 class WorkerBuilder{
 protected:
@@ -327,23 +326,24 @@ void menu(){
 
     Input start = Input("Start");
     std::string aux; std::cin >> aux;
+    char x = aux[0];
 
-    if(aux.length() > 1)
-    {
+    try{
+        if(aux.length() > 1) throw(aux.length());
+
+        try{
+            if(49 <= x && x <= 57) throw(x);
+
+            auto program = Input(x);
+        }
+        catch(...){
+            auto *program = Input<int>::getInstance((int) x - 48);
+        }
+    }
+    catch(...){
         std::cout << "| Just a letter or number please!\n";
         menu();
     }
-    char x = aux[0];
-
-    if(49 <= x && x <= 57) {
-        Input<int> *program = Input<int>::getInstance((int) x - 48);
-        return;
-    }
-
-    Input program = Input(x);
-
-
-
 }
 
 int main(){
